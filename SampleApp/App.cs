@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Net.Http;
-using System.Net.Http.Json;
-using System.Threading.Tasks;
-using SampleApp.Options;
+﻿using FreeSql.DataAnnotations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using SampleApp.Options;
+using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Json;
+using System.Threading.Tasks;
 
 namespace SampleApp
 {
@@ -28,6 +30,8 @@ namespace SampleApp
         public async Task RunAsync(string[] args)
         {
             _logger.LogInformation("App Run Start");
+
+           
 
             await Task.FromResult(0);
             _logger.LogInformation("App Run End!");

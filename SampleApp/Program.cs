@@ -1,12 +1,15 @@
-﻿using System.Diagnostics;
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
-using SampleApp.Options;
+﻿using FreeSql;
+using FreeSql.DataAnnotations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SampleApp.Options;
 using Serilog;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace SampleApp
 {
@@ -46,8 +49,10 @@ namespace SampleApp
             Log.Logger.Information("Application Starting");
 
             IFreeSql fsql = new FreeSql.FreeSqlBuilder()
-             .UseConnectionString(FreeSql.DataType.Sqlite, configuration["ConnectionStrings:DefaultConnection"])
+             //.UseConnectionString(FreeSql.DataType.Sqlite, configuration["ConnectionStrings:DefaultConnection"])
+             .UseConnectionString(FreeSql.DataType.MySql, configuration["ConnectionStrings:MySql"])
              .UseAutoSyncStructure(true)
+             //.UseNoneCommandParameter(true)
              //.UseGenerateCommandParameterWithLambda(true)
              .UseLazyLoading(true)
              .UseMonitorCommand(
@@ -61,6 +66,8 @@ namespace SampleApp
                         { // Adding the DI container for configuration
                           // 添加 services:
                             services.AddSingleton(fsql);
+                            services.AddFreeRepository();
+                            services.AddScoped<UnitOfWorkManager>();
                             services.Configure<AppOption>(configuration.GetSection(AppOption.Name));
                             services.AddTransient<App>(); // Add transiant mean give me an instance each it is being requested
                             services.AddHttpClient();
