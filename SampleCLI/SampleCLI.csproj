@@ -1,0 +1,54 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<Description>
+			IGeekFan.FreeKit.CLI Tools for the .NET Command-Line Interface.
+
+			freekit --version
+			freekit  example -t 标题
+			freekit  example --title 标题
+		</Description>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<IncludeSource>false</IncludeSource>
+		<PackAsTool>true</PackAsTool>
+		<ToolCommandName>samplecli</ToolCommandName>
+		<PackageOutputPath>./nupkg</PackageOutputPath>
+		<!--<PackAsToolShimRuntimeIdentifiers>win-x64;win-x86</PackAsToolShimRuntimeIdentifiers>-->
+		<!--<Nullable>enable</Nullable>-->
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<AssemblyVersion>0.0.1</AssemblyVersion>
+		<FileVersion>0.0.1</FileVersion>
+		<Version>0.0.1</Version>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+	</PropertyGroup>
+	
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<NoWarn>1701;1702;1591</NoWarn>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<NoWarn>1701;1702;1591</NoWarn>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Remove="nupkg\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Scriban" Version="4.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+		<PackageReference Include="Humanizer.Core" Version="2.11.10" />
+		<PackageReference Include="Serilog.Extensions.Hosting" Version="4.1.2" />
+		<PackageReference Include="Serilog.Settings.Configuration" Version="3.1.0" />
+		<PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
+		<PackageReference Include="Serilog.Sinks.File" Version="5.0.0-dev-00862" />
+		<PackageReference Include="System.CommandLine" Version="2.0.0-beta1.21308.1" />
+		<PackageReference Include="System.CommandLine.Hosting" Version="0.3.0-alpha.21216.1" />
+	</ItemGroup>
+
+
+
+</Project>

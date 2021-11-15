@@ -30,9 +30,6 @@ namespace SampleApp
         public async Task RunAsync(string[] args)
         {
             _logger.LogInformation("App Run Start");
-
-           
-
             await Task.FromResult(0);
             _logger.LogInformation("App Run End!");
         }
@@ -70,8 +67,32 @@ namespace SampleApp
 
         public async Task SaveDBAsync()
         {
-            await Task.FromResult(0);
+            var time = DateTime.Now;
+
+            await fsql.Insert<TT>(new TT { Create = time }).ExecuteAffrowsAsync();
+            await fsql.Insert<TT2>(new TT2 { Create = time }).ExecuteAffrowsAsync();
+
+            fsql.Transaction(() =>
+           {
+               fsql.Insert<TT>(new TT { Create = time }).ExecuteAffrows();
+               fsql.Update<TT2>().SetSource(new TT2 { Id = 1, Create = time }).ExecuteAffrows();
+           });
         }
     }
 
+    public class TT
+    {
+        [Column(IsPrimary = true, IsIdentity = true)]
+        public int Id { get; set; }
+
+        public DateTime Create { get; set; }
+    }
+
+    public class TT2
+    {
+        [Column(IsPrimary = true, IsIdentity = true)]
+        public int Id { get; set; }
+
+        public DateTime Create { get; set; }
+    }
 }
