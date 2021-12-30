@@ -1,8 +1,6 @@
 ﻿using FreeSql.Internal;
 using FreeSql.Internal.CommonProvider;
 using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Threading;
 
 namespace FreeSql

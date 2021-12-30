@@ -55,7 +55,7 @@ namespace SampleAppTests
                 builder.AddDebug();
             });
             services.AddSingleton(fsql);
-            services.Configure<AppOption>(configuration.GetSection(nameof(AppOption));
+            services.Configure<AppOption>(configuration.GetSection(nameof(AppOption)));
             services.AddTransient<App>(); // Add transiant mean give me an instance each it is being requested
             services.AddHttpClient();
         }

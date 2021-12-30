@@ -4,9 +4,9 @@
 		<Description>
 			IGeekFan.FreeKit.CLI Tools for the .NET Command-Line Interface.
 
-			freekit --version
-			freekit  example -t 标题
-			freekit  example --title 标题
+			samplecli --version
+			samplecli  example -t 标题
+			samplecli  example --title 标题
 		</Description>
 		<OutputType>Exe</OutputType>
 		<TargetFramework>net6.0</TargetFramework>
@@ -37,16 +37,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Scriban" Version="4.0.1" />
-		<PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
+		<PackageReference Include="Scriban" Version="5.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-		<PackageReference Include="Humanizer.Core" Version="2.11.10" />
-		<PackageReference Include="Serilog.Extensions.Hosting" Version="4.1.2" />
-		<PackageReference Include="Serilog.Settings.Configuration" Version="3.1.0" />
-		<PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
-		<PackageReference Include="Serilog.Sinks.File" Version="5.0.0-dev-00862" />
-		<PackageReference Include="System.CommandLine" Version="2.0.0-beta1.21308.1" />
-		<PackageReference Include="System.CommandLine.Hosting" Version="0.3.0-alpha.21216.1" />
+		<PackageReference Include="Humanizer.Core" Version="2.13.14" />
+		<PackageReference Include="Serilog.Extensions.Hosting" Version="4.2.0" />
+		<PackageReference Include="Serilog.Settings.Configuration" Version="3.3.0" />
+		<PackageReference Include="Serilog.Sinks.Console" Version="4.0.2-dev-00890" />
+		<PackageReference Include="Serilog.Sinks.File" Version="5.0.1-dev-00947" />
+		<PackageReference Include="System.CommandLine" Version="2.0.0-beta2.21617.1" />
+		<PackageReference Include="System.CommandLine.Hosting" Version="0.4.0-alpha.21617.1" />
 	</ItemGroup>
 
 
