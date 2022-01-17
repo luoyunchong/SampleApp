@@ -42,7 +42,7 @@
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
 		<PackageReference Include="Humanizer.Core" Version="2.13.14" />
 		<PackageReference Include="Serilog.Extensions.Hosting" Version="4.2.0" />
-		<PackageReference Include="Serilog.Settings.Configuration" Version="3.3.0" />
+		<PackageReference Include="Serilog.Settings.Configuration" Version="3.3.1-dev-00296" />
 		<PackageReference Include="Serilog.Sinks.Console" Version="4.0.2-dev-00890" />
 		<PackageReference Include="Serilog.Sinks.File" Version="5.0.1-dev-00947" />
 		<PackageReference Include="System.CommandLine" Version="2.0.0-beta2.21617.1" />

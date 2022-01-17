@@ -16,7 +16,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleApi", "SampleApi\Samp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleCore", "SampleCore\SampleCore.csproj", "{26579E93-EE31-41E1-B805-5C314D7AE06E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleCLI", "SampleCLI\SampleCLI.csproj", "{27F9EDC3-0528-489A-B12C-B9D15AE4996F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleCLI", "SampleCLI\SampleCLI.csproj", "{27F9EDC3-0528-489A-B12C-B9D15AE4996F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleWpfApp", "SampleWpfApp\SampleWpfApp.csproj", "{DCB68546-D189-4269-9B53-D8F30AF37565}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,6 +46,10 @@ Global
 		{27F9EDC3-0528-489A-B12C-B9D15AE4996F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{27F9EDC3-0528-489A-B12C-B9D15AE4996F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{27F9EDC3-0528-489A-B12C-B9D15AE4996F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCB68546-D189-4269-9B53-D8F30AF37565}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCB68546-D189-4269-9B53-D8F30AF37565}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCB68546-D189-4269-9B53-D8F30AF37565}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCB68546-D189-4269-9B53-D8F30AF37565}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

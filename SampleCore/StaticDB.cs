@@ -9,7 +9,8 @@ namespace FreeSql
 
     public abstract class StaticDB<DBKey>
     {
-        public static IFreeSql Instance { get; } = new MultiFreeSql<DBKey>();
+        protected static Lazy<IFreeSql> multiFreeSql = new Lazy<IFreeSql>(() => new MultiFreeSql());
+        public static IFreeSql Instance => multiFreeSql.Value;
     }
 
     public class MultiFreeSql : MultiFreeSql<string> { }
@@ -19,7 +20,7 @@ namespace FreeSql
         internal TDBKey _dbkeyMaster;
         internal AsyncLocal<TDBKey> _dbkeyCurrent = new AsyncLocal<TDBKey>();
         BaseDbProvider _ormMaster => _ib.Get(_dbkeyMaster) as BaseDbProvider;
-        BaseDbProvider _ormCurrent => _ib.Get(object.Equals(_dbkeyCurrent.Value, default(TDBKey)) ? _dbkeyMaster : _dbkeyCurrent.Value) as BaseDbProvider;
+        BaseDbProvider _ormCurrent => _ib.Get(Equals(_dbkeyCurrent.Value, default(TDBKey)) ? _dbkeyMaster : _dbkeyCurrent.Value) as BaseDbProvider;
         internal IdleBus<TDBKey, IFreeSql> _ib;
 
         public MultiFreeSql()

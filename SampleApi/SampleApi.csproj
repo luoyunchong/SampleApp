@@ -2,6 +2,8 @@
 
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -10,16 +12,20 @@
 		<PackageReference Include="FreeSql.Provider.Sqlite" Version="3.0.100" />
 		<PackageReference Include="FreeSql.Repository" Version="3.0.100" />
 		<PackageReference Include="IGeekFan.AspNetCore.RapiDoc" Version="0.0.5" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.1" />
+		<PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.15.0" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
 		<PackageReference Include="Serilog.Extensions.Hosting" Version="4.2.0" />
-		<PackageReference Include="Serilog.Settings.Configuration" Version="3.3.0" />
+		<PackageReference Include="Serilog.Settings.Configuration" Version="3.3.1-dev-00296" />
 		<PackageReference Include="Serilog.Sinks.Console" Version="4.0.2-dev-00890" />
 		<PackageReference Include="Serilog.Sinks.File" Version="5.0.1-dev-00947" />
+		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.15.0" />
+		<PackageReference Include="DotNetCore.Security" Version="16.11.0" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\SampleCore\SampleCore.csproj" />
+		<ProjectReference Include="..\SampleCore\SampleCore.csproj" />
 	</ItemGroup>
 
 </Project>

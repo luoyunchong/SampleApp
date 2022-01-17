@@ -6,7 +6,6 @@ using SampleApp.Options;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Net.Http.Json;
 using System.Threading.Tasks;
 
 namespace SampleApp
@@ -31,68 +30,31 @@ namespace SampleApp
         {
             _logger.LogInformation("App Run Start");
             await Task.FromResult(0);
+
+            using (var ctx = fsql.CreateDbContext())
+            {
+                //var db1 = ctx.Set<Song>();
+                //var db2 = ctx.Set<Tag>();
+
+                var item1 = new Song { Id=Guid.NewGuid().ToString()};
+                var item2 = new Song { Id = Guid.NewGuid().ToString() };
+                await ctx.AddRangeAsync(new List<Song> { item1, item2 });
+                //ctx.SaveChanges();
+            }
             _logger.LogInformation("App Run End!");
         }
 
 
-        public async Task<T> GetAsync<T>(string url)
-        {
-            Dictionary<string, string> headers = new Dictionary<string, string>
-            {
-{"accept", "application/json, text/plain, */*"},
-{"Accept-Language", "zh-CN,zh;q=0.9" },
-{"Cookie", ""},
-{ "Proxy-Connection"," keep-alive"},
-{"Upgrade-Insecure-Requests", "1"},
-{"User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36"}
-            };
-
-            using (HttpClient client = httpClientFactory.CreateClient())
-            {
-                if (headers != null)
-                {
-                    foreach (var header in headers)
-                        client.DefaultRequestHeaders.Add(header.Key, header.Value);
-                }
-                T result = default(T);
-                var response = await client.GetAsync(url);
-                if (response.IsSuccessStatusCode)
-                {
-                    result = await response.Content.ReadFromJsonAsync<T>();
-                }
-
-                return result;
-            }
-        }
-
         public async Task SaveDBAsync()
         {
-            var time = DateTime.Now;
 
-            await fsql.Insert<TT>(new TT { Create = time }).ExecuteAffrowsAsync();
-            await fsql.Insert<TT2>(new TT2 { Create = time }).ExecuteAffrowsAsync();
-
-            fsql.Transaction(() =>
-           {
-               fsql.Insert<TT>(new TT { Create = time }).ExecuteAffrows();
-               fsql.Update<TT2>().SetSource(new TT2 { Id = 1, Create = time }).ExecuteAffrows();
-           });
         }
     }
 
-    public class TT
+    internal class Song
     {
-        [Column(IsPrimary = true, IsIdentity = true)]
-        public int Id { get; set; }
-
-        public DateTime Create { get; set; }
-    }
-
-    public class TT2
-    {
-        [Column(IsPrimary = true, IsIdentity = true)]
-        public int Id { get; set; }
-
-        public DateTime Create { get; set; }
+        [Column(IsPrimary = true)]
+        public string Id { get; set; }
+        public string NN { get; set; }
     }
 }
