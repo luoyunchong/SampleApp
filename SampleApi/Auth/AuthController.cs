@@ -7,6 +7,9 @@ using System.Security.Claims;
 
 namespace SampleApi.Auth;
 
+/// <summary>
+/// 登录认证个人信息
+/// </summary>
 [ApiController]
 [Route("/api/[controller]/[action]")]
 [AllowAnonymous]
@@ -21,6 +24,11 @@ public class AuthController : ControllerBase
         _userService = userService;
     }
 
+    /// <summary>
+    /// 登录，生成访问Toekn
+    /// </summary>
+    /// <param name="loginInfo"></param>
+    /// <returns></returns>
     [HttpPost]
     public async Task<IActionResult> GenerateToken(LoginInfo loginInfo)
     {
@@ -55,6 +63,11 @@ public class AuthController : ControllerBase
         });
     }
 
+    /// <summary>
+    /// 编码Token
+    /// </summary>
+    /// <param name="token"></param>
+    /// <returns></returns>
     [HttpGet]
     public CurrentUser DecodeToken(string token)
     {
@@ -75,6 +88,10 @@ public class AuthController : ControllerBase
         return null;
     }
 
+    /// <summary>
+    /// 根据Request Header携带Authorization:Bearer+空格+AccessToken获取当前登录人信息
+    /// </summary>
+    /// <returns></returns>
     [HttpGet]
     public async Task<CurrentUser> GetUserByRequestContext()
     {

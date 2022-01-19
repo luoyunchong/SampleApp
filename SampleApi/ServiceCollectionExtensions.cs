@@ -1,7 +1,11 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using FreeSql;
+using FreeSql.Internal;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
 using SampleApi.Auth;
+using SampleApi.Models;
 using Serilog;
+using System.Diagnostics;
 
 namespace SampleApi;
 
@@ -17,6 +21,32 @@ public static class ServiceCollectionExtensions
 
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options => options.TokenValidationParameters = jwtSettings.TokenValidationParameters);
+
+        return services;
+    }
+
+    public static IServiceCollection AddFreeSql(this IServiceCollection services, IConfiguration Configuration)
+    {
+        IFreeSql fsql = new FreeSql.FreeSqlBuilder()
+        .UseConnectionString(FreeSql.DataType.Sqlite, Configuration["ConnectionStrings:DefaultConnection"])
+        .UseConnectionString(FreeSql.DataType.MySql, Configuration["ConnectionStrings:MySql"])
+        .UseNameConvert(NameConvertType.PascalCaseToUnderscoreWithLower)
+        .UseAutoSyncStructure(true)
+        //.UseGenerateCommandParameterWithLambda(true)
+        .UseLazyLoading(false)
+        .UseMonitorCommand(
+            cmd => Trace.WriteLine("\r\n线程" + Thread.CurrentThread.ManagedThreadId + ": " + cmd.CommandText)
+            )
+        .Build();
+
+        services.AddSingleton(fsql);
+        services.AddFreeRepository();
+        services.AddScoped<UnitOfWorkManager>();
+        fsql.CodeFirst.Entity<SysUser>(eb =>
+        {
+            eb.HasData(new List<SysUser>() { new SysUser() { UserName = "admin" } });
+        });
+        fsql.CodeFirst.SyncStructure<SysUser>();
 
         return services;
     }

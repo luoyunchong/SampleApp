@@ -26,6 +26,7 @@ public class StorageUserService : IStorageUserService
 
         CurrentUser currentUser = new CurrentUser
         {
+            IsAuthenticated = user.Identity.IsAuthenticated,
             UserId = userIdOrNull == null ? null : Convert.ToInt32(userIdOrNull),
             UserName = UserName
         };
