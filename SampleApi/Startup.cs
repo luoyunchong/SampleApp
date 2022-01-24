@@ -66,9 +66,15 @@ public class Startup
             app.UseDeveloperExceptionPage();
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "SampleApi v1"));
+            //https://github.com/luoyunchong/IGeekFan.AspNetCore.RapiDoc
             app.UseRapiDocUI(c =>
             {
                 c.RoutePrefix = ""; // serve the UI at root
+                c.GenericRapiConfig = new GenericRapiConfig()
+                {
+                    RenderStyle = "focused",
+                    Theme = "light",//light,dark,focused   
+                };
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "SampleApi v1");
             });
         }
@@ -77,8 +83,8 @@ public class Startup
 
         app.UseRouting();
 
-        app.UseAuthorization();
         app.UseAuthentication();
+        app.UseAuthorization();
 
         app.UseEndpoints(endpoints =>
         {

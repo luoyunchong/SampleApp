@@ -13,6 +13,7 @@ Console集成依赖注入，Serilog日志
 - HtmlAgilityPack
 - FreeSql
 - Newtonsoft.Json
+- Json Web Token
 
 xUnit集成依赖注入
 

@@ -25,19 +25,20 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
+    #region FreeSql
     public static IServiceCollection AddFreeSql(this IServiceCollection services, IConfiguration Configuration)
     {
-        IFreeSql fsql = new FreeSql.FreeSqlBuilder()
-        .UseConnectionString(FreeSql.DataType.Sqlite, Configuration["ConnectionStrings:DefaultConnection"])
-        .UseConnectionString(FreeSql.DataType.MySql, Configuration["ConnectionStrings:MySql"])
-        .UseNameConvert(NameConvertType.PascalCaseToUnderscoreWithLower)
-        .UseAutoSyncStructure(true)
-        //.UseGenerateCommandParameterWithLambda(true)
-        .UseLazyLoading(false)
-        .UseMonitorCommand(
-            cmd => Trace.WriteLine("\r\n线程" + Thread.CurrentThread.ManagedThreadId + ": " + cmd.CommandText)
-            )
-        .Build();
+        IFreeSql fsql = new FreeSqlBuilder()
+                    .UseConnectionString(DataType.Sqlite, Configuration["ConnectionStrings:DefaultConnection"])
+                    .UseConnectionString(DataType.MySql, Configuration["ConnectionStrings:MySql"])
+                    .UseNameConvert(NameConvertType.PascalCaseToUnderscoreWithLower)
+                    .UseAutoSyncStructure(true)
+                    //.UseGenerateCommandParameterWithLambda(true)
+                    .UseLazyLoading(false)
+                    .UseMonitorCommand(
+                        cmd => Trace.WriteLine("\r\n线程" + Thread.CurrentThread.ManagedThreadId + ": " + cmd.CommandText)
+                        )
+                    .Build();
 
         services.AddSingleton(fsql);
         services.AddFreeRepository();
@@ -49,13 +50,12 @@ public static class ServiceCollectionExtensions
         fsql.CodeFirst.SyncStructure<SysUser>();
 
         return services;
-    }
-
+    } 
+    #endregion
 
     #region Swagger
     public static IServiceCollection AddSwagger(this IServiceCollection services, IConfiguration configuration)
     {
-        //Swagger重写PascalCase，改成小写开头模式
         services.AddSwaggerGen(options =>
         {
             try
@@ -93,7 +93,6 @@ public static class ServiceCollectionExtensions
                 Name = "Authorization", //jwt默认的参数名称
                 In = ParameterLocation.Header, //jwt默认存放Authorization信息的位置(请求头中)
                 Type = SecuritySchemeType.ApiKey
-
             });
 
         });

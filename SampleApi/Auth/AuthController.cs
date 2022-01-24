@@ -12,7 +12,6 @@ namespace SampleApi.Auth;
 /// </summary>
 [ApiController]
 [Route("/api/[controller]/[action]")]
-[AllowAnonymous]
 public class AuthController : ControllerBase
 {
     private readonly IStorageUserService _userService;
@@ -30,6 +29,7 @@ public class AuthController : ControllerBase
     /// <param name="loginInfo"></param>
     /// <returns></returns>
     [HttpPost]
+    [AllowAnonymous]
     public async Task<IActionResult> GenerateToken(LoginInfo loginInfo)
     {
         SysUser user = await _userService.CheckPasswordAsync(loginInfo);
@@ -69,6 +69,7 @@ public class AuthController : ControllerBase
     /// <param name="token"></param>
     /// <returns></returns>
     [HttpGet]
+    [AllowAnonymous]
     public CurrentUser DecodeToken(string token)
     {
         var jwtTokenHandler = new JwtSecurityTokenHandler();
@@ -80,6 +81,7 @@ public class AuthController : ControllerBase
             string? UserName = jwtPayload.Claims.FirstOrDefault(r => r.Type == ClaimTypes.Name)?.Value;
             CurrentUser currentUser = new CurrentUser
             {
+                IsAuthenticated = userIdOrNull != null ? true : false,
                 UserId = userIdOrNull == null ? null : Convert.ToInt32(userIdOrNull),
                 UserName = UserName
             };
@@ -93,6 +95,7 @@ public class AuthController : ControllerBase
     /// </summary>
     /// <returns></returns>
     [HttpGet]
+    [Authorize]
     public async Task<CurrentUser> GetUserByRequestContext()
     {
         return await _userService.GetUserByRequestContext();
