@@ -10,7 +10,7 @@ public interface IStorageUserService
     /// </summary>
     /// <param name="loginInfo"></param>
     /// <returns></returns>
-    Task<SysUser> CheckPasswordAsync(LoginInfo loginInfo);
+    Task<SysUser> CheckPasswordAsync(LoginInfo loginInfo, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// 根据Request Header携带Authorization:Bearer+空格+AccessToken获取当前登录人信息

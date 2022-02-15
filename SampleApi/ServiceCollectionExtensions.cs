@@ -11,6 +11,7 @@ namespace SampleApi;
 
 public static class ServiceCollectionExtensions
 {
+    #region AddJwt
     public static IServiceCollection AddJwt(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -23,14 +24,56 @@ public static class ServiceCollectionExtensions
             .AddJwtBearer(options => options.TokenValidationParameters = jwtSettings.TokenValidationParameters);
 
         return services;
-    }
+    } 
+    #endregion
 
     #region FreeSql
+    public static IServiceCollection AddMultiFreeSql(this IServiceCollection services)
+    {
+        //db 是一个静态类，并非实例化
+        //可通过事先注册 使用的数据库，或运行中使用Register动态注册
+
+        #region 1.静态类的注册方式
+        var db = StaticDB.Instance;
+
+        db.Register("db1", () =>
+        {
+            return new FreeSqlBuilder()
+                .UseAutoSyncStructure(true)
+                .UseMonitorCommand(
+                cmd => Trace.WriteLine("\r\n线程" + Thread.CurrentThread.ManagedThreadId + ": " + cmd.CommandText)
+                )
+                .UseConnectionString(DataType.Sqlite, "Data Source=|DataDirectory|\\SampleApp1.db;")
+                .Build();
+        });
+        db.Register("db2", () =>
+        {
+            return new FreeSqlBuilder()
+                .UseAutoSyncStructure(true)
+                .UseMonitorCommand(
+                cmd => Trace.WriteLine("\r\n线程" + Thread.CurrentThread.ManagedThreadId + ": " + cmd.CommandText)
+                )
+                .UseConnectionString(DataType.Sqlite, "Data Source=|DataDirectory|\\SampleApp2.db;")
+                .Build();
+        });
+        #endregion
+
+        #region 2.依赖注入的使用方式
+        var fsql2 = new MultiFreeSql();
+
+        fsql2.Register("db1", () => new FreeSqlBuilder().UseAutoSyncStructure(true).UseConnectionString(DataType.Sqlite, "Data Source=|DataDirectory|\\SampleApp1.db;").Build());
+        fsql2.Register("db2", () => new FreeSqlBuilder().UseAutoSyncStructure(true).UseConnectionString(DataType.Sqlite, "Data Source=|DataDirectory|\\SampleApp2.db;").Build());
+
+        services.AddSingleton<IFreeSql>(fsql2);
+        #endregion
+
+        return services;
+    }
     public static IServiceCollection AddFreeSql(this IServiceCollection services, IConfiguration Configuration)
     {
         IFreeSql fsql = new FreeSqlBuilder()
                     .UseConnectionString(DataType.Sqlite, Configuration["ConnectionStrings:DefaultConnection"])
-                    .UseConnectionString(DataType.MySql, Configuration["ConnectionStrings:MySql"])
+                    //.UseConnectionString(DataType.MySql, Configuration["ConnectionStrings:MySql"])
                     .UseNameConvert(NameConvertType.PascalCaseToUnderscoreWithLower)
                     .UseAutoSyncStructure(true)
                     //.UseGenerateCommandParameterWithLambda(true)
@@ -60,7 +103,7 @@ public static class ServiceCollectionExtensions
         {
             try
             {
-                options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{typeof(Startup).Assembly.GetName().Name}.xml"), true);
+                options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{typeof(Program).Assembly.GetName().Name}.xml"), true);
             }
             catch (Exception ex)
             {

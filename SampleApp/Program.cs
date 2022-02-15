@@ -64,7 +64,7 @@ namespace SampleApp
                              .UseAutoSyncStructure(true)
                              //.UseNoneCommandParameter(true)
                              //.UseGenerateCommandParameterWithLambda(true)
-                             .UseLazyLoading(true)
+                             .UseLazyLoading(false)
                              .UseMonitorCommand(
                                  cmd => Trace.WriteLine("\r\n线程" + Thread.CurrentThread.ManagedThreadId + ": " + cmd.CommandText)
                                  )

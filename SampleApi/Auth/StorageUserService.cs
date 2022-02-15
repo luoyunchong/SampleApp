@@ -6,14 +6,24 @@ namespace SampleApi.Auth;
 public class StorageUserService : IStorageUserService
 {
     private readonly IHttpContextAccessor _contextAccessor;
-
-    public StorageUserService(IHttpContextAccessor contextAccessor)
+    private readonly ILogger<StorageUserService> logger;
+    public StorageUserService(IHttpContextAccessor contextAccessor, ILogger<StorageUserService> logger)
     {
         _contextAccessor = contextAccessor;
+        this.logger = logger;
     }
 
-    public async Task<SysUser> CheckPasswordAsync(LoginInfo loginInfo)
+    public async Task<SysUser> CheckPasswordAsync(LoginInfo loginInfo, CancellationToken cancellationToken = default)
     {
+
+        logger.LogInformation($"Begin-----延迟执行{loginInfo.UserName}....");
+        await Task.Delay(5000);
+        if (_contextAccessor.HttpContext.RequestAborted.IsCancellationRequested)
+        {
+            logger.LogInformation($"End-------IsCancellationRequested{loginInfo.UserName}....");
+            return null;
+        }
+        logger.LogInformation($"End-------延迟执行{loginInfo.UserName}....");
         return await Task.FromResult(new SysUser { Id = new Random().Next(10000), UserName = loginInfo.UserName });
     }
 

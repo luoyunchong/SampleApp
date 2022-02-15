@@ -24,7 +24,7 @@ public class AuthController : ControllerBase
     }
 
     /// <summary>
-    /// 登录，生成访问Toekn
+    /// 登录，生成访问Token
     /// </summary>
     /// <param name="loginInfo"></param>
     /// <returns></returns>
