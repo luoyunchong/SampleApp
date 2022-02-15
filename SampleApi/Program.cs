@@ -10,7 +10,7 @@ builder.Host.UseSerilog();
 var services = builder.Services;
 var Configuration = builder.Configuration;
 
-#region SerilogÅäÖÃ
+#region Serilogé…ç½®
 Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(builder.Configuration)
        .Enrich.FromLogContext()
        .CreateLogger();
@@ -27,7 +27,7 @@ services.AddMultiFreeSql().AddControllers();
 
 var app = builder.Build();
 
-// ÅäÖÃ HTTPÇëÇóÖĞ¼ä¼ş
+// é…ç½® HTTPè¯·æ±‚ä¸­é—´ä»¶
 if (builder.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
