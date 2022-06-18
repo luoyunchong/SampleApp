@@ -58,15 +58,16 @@ namespace SampleApp
             Log.Logger.Information("Application Starting");
 
             IFreeSql fsql = new FreeSql.FreeSqlBuilder()
-                             //.UseConnectionString(FreeSql.DataType.Sqlite, configuration["ConnectionStrings:DefaultConnection"])
-                             .UseConnectionString(FreeSql.DataType.MySql, configuration["ConnectionStrings:MySql"])
+                            .UseConnectionString(FreeSql.DataType.Sqlite, configuration["ConnectionStrings:DefaultConnection"])
+                             // .UseConnectionString(FreeSql.DataType.MySql, configuration["ConnectionStrings:MySql"])
                              //.UseConnectionString(FreeSql.DataType.SqlServer, configuration["ConnectionStrings:SqlServer"])
+                             .UseNameConvert(FreeSql.Internal.NameConvertType.ToUpper)
                              .UseAutoSyncStructure(true)
                              //.UseNoneCommandParameter(true)
                              //.UseGenerateCommandParameterWithLambda(true)
-                             .UseLazyLoading(false)
+                             //.UseLazyLoading(false)
                              .UseMonitorCommand(
-                                 cmd => Trace.WriteLine("\r\n线程" + Thread.CurrentThread.ManagedThreadId + ": " + cmd.CommandText)
+                                 cmd => Console.WriteLine("\r\n线程" + Thread.CurrentThread.ManagedThreadId + ": " + cmd.CommandText)
                                  )
                              .Build();
             fsql.Aop.ConfigEntityProperty += (s, e) =>

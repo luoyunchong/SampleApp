@@ -12,6 +12,8 @@ public interface IStorageUserService
     /// <returns></returns>
     Task<SysUser> CheckPasswordAsync(LoginInfo loginInfo, CancellationToken cancellationToken = default);
 
+    Task<SysUser> GetUserById(int userId);
+
     /// <summary>
     /// 根据Request Header携带Authorization:Bearer+空格+AccessToken获取当前登录人信息
     /// </summary>

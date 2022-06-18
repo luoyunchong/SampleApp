@@ -17,7 +17,7 @@ public class StorageUserService : IStorageUserService
     {
 
         logger.LogInformation($"Begin-----延迟执行{loginInfo.UserName}....");
-        await Task.Delay(5000);
+        await Task.Delay(1);
         if (_contextAccessor.HttpContext.RequestAborted.IsCancellationRequested)
         {
             logger.LogInformation($"End-------IsCancellationRequested{loginInfo.UserName}....");
@@ -25,6 +25,11 @@ public class StorageUserService : IStorageUserService
         }
         logger.LogInformation($"End-------延迟执行{loginInfo.UserName}....");
         return await Task.FromResult(new SysUser { Id = new Random().Next(10000), UserName = loginInfo.UserName });
+    }
+
+    public async Task<SysUser> GetUserById(int userId)
+    {
+        return await Task.FromResult(new SysUser { Id = userId, UserName = new Random().Next(100).ToString() });
     }
 
     public async Task<CurrentUser> GetUserByRequestContext()
