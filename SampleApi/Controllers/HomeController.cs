@@ -47,7 +47,7 @@ public class HomeController : ControllerBase
 
         //查询 db2
         var db2 = _fsql.Select<SysUser>().ToList();
-        _fsql.Change("db2");
+        
         return db2;
     }
 
@@ -56,7 +56,7 @@ public class HomeController : ControllerBase
     /// </summary>
     /// <returns></returns>
     [HttpGet("getdb3")]
-    public IEnumerable<SysUser> Get3()
+    public IEnumerable<SysUser> GetDB3()
     {
         _fsql.Change("db3");
         //查询 db1

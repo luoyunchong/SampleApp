@@ -1,10 +1,20 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using FreeSql.Internal;
 using FreeSql.Internal.CommonProvider;
 
 namespace FreeSql
 {
-    public class MultiFreeSql : MultiFreeSql<string> { }
+    public class MultiFreeSql : MultiFreeSql<string>
+    {
+        public MultiFreeSql(TimeSpan timeSpan) : base(timeSpan)
+        {
+        }
+
+        public MultiFreeSql(IdleBus<string, IFreeSql> idleBus) : base(idleBus)
+        {
+        }
+    }
     public class MultiFreeSql<TDBKey> : BaseDbProvider, IFreeSql
     {
         internal TDBKey _dbkeyMaster;
@@ -13,10 +23,15 @@ namespace FreeSql
         BaseDbProvider _ormCurrent => _ib.Get(Equals(_dbkeyCurrent.Value, default(TDBKey)) ? _dbkeyMaster : _dbkeyCurrent.Value) as BaseDbProvider;
         internal IdleBus<TDBKey, IFreeSql> _ib;
 
-        public MultiFreeSql()
+        public MultiFreeSql(TimeSpan timeSpan)
         {
-            _ib = new IdleBus<TDBKey, IFreeSql>();
+            _ib = new IdleBus<TDBKey, IFreeSql>(timeSpan);
             _ib.Notice += (_, __) => { };
+        }
+
+        public MultiFreeSql(IdleBus<TDBKey, IFreeSql> idleBus)
+        {
+            _ib = idleBus;
         }
 
         public override IAdo Ado => _ormCurrent.Ado;

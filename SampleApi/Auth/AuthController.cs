@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using SampleApi.Models;
+using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net;
 using System.Security.Claims;
 using System.Security.Cryptography;
 
@@ -40,12 +42,13 @@ public class AuthController : ControllerBase
     /// <returns></returns>
     [HttpPost]
     [AllowAnonymous]
+    [ProducesResponseType(typeof(BaseReponse), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> Login(LoginInfo loginInfo)
     {
         SysUser user = await _userService.CheckPasswordAsync(loginInfo);
         if (user == null)
         {
-            return Ok(new
+            return Ok(new BaseReponse
             {
                 Status = false,
                 Message = "账号或密码错误"
@@ -56,7 +59,7 @@ public class AuthController : ControllerBase
 
     }
 
-    private CommonReponse CreateAccessToken(SysUser user)
+    private BaseReponse CreateAccessToken(SysUser user)
     {
         var claims = new List<Claim>();
 
@@ -83,9 +86,10 @@ public class AuthController : ControllerBase
 
         //模拟保存Token
         RefreshTokens.Add(refreshToken);
-        return new CommonReponse
+        return new BaseReponse
         {
             Status = true,
+            Message = "登录成功",
             Data = new
             {
                 Token = new JwtSecurityTokenHandler().WriteToken(token),
@@ -107,9 +111,10 @@ public class AuthController : ControllerBase
     /// </summary>
     /// <param name="refreshToken"></param>
     /// <returns></returns>
-    [HttpPost]
+    [HttpGet]
     [AllowAnonymous]
-    public async Task<IActionResult> RefreshToken(string refreshToken)
+    [ProducesResponseType(typeof(BaseReponse), (int)HttpStatusCode.OK)]
+    public async Task<IActionResult> RefreshToken([Required] string refreshToken)
     {
         var refreshTokenEntity = RefreshTokens.SingleOrDefault(t => t.Token == refreshToken);
         if (refreshTokenEntity != null)

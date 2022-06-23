@@ -5,6 +5,7 @@ using Microsoft.OpenApi.Models;
 using SampleApi.Auth;
 using SampleApi.Models;
 using Serilog;
+using System;
 using System.Diagnostics;
 
 namespace SampleApi;
@@ -24,7 +25,7 @@ public static class ServiceCollectionExtensions
             .AddJwtBearer(options => options.TokenValidationParameters = jwtSettings.TokenValidationParameters);
 
         return services;
-    } 
+    }
     #endregion
 
     #region FreeSql
@@ -34,7 +35,7 @@ public static class ServiceCollectionExtensions
         //可通过事先注册 使用的数据库，或运行中使用Register动态注册
 
         #region 1.静态类的注册方式
-        var db = StaticDB.Instance;
+        IFreeSql db = StaticDB.Instance;
 
         db.Register("db1", () =>
         {
@@ -59,7 +60,13 @@ public static class ServiceCollectionExtensions
         #endregion
 
         #region 2.依赖注入的使用方式
-        var fsql2 = new MultiFreeSql();
+        //直接配置时间，无法配置Notice事件
+        var fsql3 = new MultiFreeSql(TimeSpan.FromHours(2));
+
+        //可传递IdleBus
+        var idlebus  = new IdleBus<string, IFreeSql>(TimeSpan.FromHours(2));
+        idlebus.Notice += (_, __) => { };
+        var fsql2 = new MultiFreeSql(idlebus);
 
         fsql2.Register("db1", () => new FreeSqlBuilder().UseAutoSyncStructure(true).UseConnectionString(DataType.Sqlite, "Data Source=|DataDirectory|\\SampleApp1.db;").Build());
         fsql2.Register("db2", () => new FreeSqlBuilder().UseAutoSyncStructure(true).UseConnectionString(DataType.Sqlite, "Data Source=|DataDirectory|\\SampleApp2.db;").Build());
@@ -93,7 +100,7 @@ public static class ServiceCollectionExtensions
         fsql.CodeFirst.SyncStructure<SysUser>();
 
         return services;
-    } 
+    }
     #endregion
 
     #region Swagger
