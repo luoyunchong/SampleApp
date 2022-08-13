@@ -1,5 +1,6 @@
 using IGeekFan.AspNetCore.RapiDoc;
 using SampleApi;
+using SampleApi.Models;
 using Serilog;
 using System.Diagnostics;
 
@@ -21,12 +22,23 @@ Serilog.Debugging.SelfLog.Enable(msg => Debug.WriteLine(msg));
 
 services
     .AddJwt(Configuration)
-    .AddSwagger(Configuration);
+    .AddSwagger(Configuration)
+    .AddMultiFreeSql(Configuration) // 多数据库切换选择
+    //.AddFreeSql(Configuration)//单库选择
+    .AddControllers();
 
-services.AddMultiFreeSql().AddControllers();
 
 var app = builder.Build();
 
+using (IServiceScope serviceScope = app.Services.CreateScope())
+{
+    var fsql = serviceScope.ServiceProvider.GetRequiredService<IFreeSql>();
+    fsql.CodeFirst.Entity<SysUser>(eb =>
+    {
+        eb.HasData(new List<SysUser>() { new SysUser() { UserName = "admin" + new Random().Next() } });
+    });
+    fsql.CodeFirst.SyncStructure<SysUser>();
+}
 // 配置 HTTP请求中间件
 if (builder.Environment.IsDevelopment())
 {

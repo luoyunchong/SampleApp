@@ -3,9 +3,7 @@ using FreeSql.Internal;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
 using SampleApi.Auth;
-using SampleApi.Models;
 using Serilog;
-using System;
 using System.Diagnostics;
 
 namespace SampleApi;
@@ -28,8 +26,8 @@ public static class ServiceCollectionExtensions
     }
     #endregion
 
-    #region FreeSql
-    public static IServiceCollection AddMultiFreeSql(this IServiceCollection services)
+    #region 多数据库FreeSql注入方式
+    public static IServiceCollection AddMultiFreeSql(this IServiceCollection services, IConfiguration Configuration)
     {
         //db 是一个静态类，并非实例化
         //可通过事先注册 使用的数据库，或运行中使用Register动态注册
@@ -61,44 +59,49 @@ public static class ServiceCollectionExtensions
 
         #region 2.依赖注入的使用方式
         //直接配置时间，无法配置Notice事件
-        var fsql3 = new MultiFreeSql(TimeSpan.FromHours(2));
+        //var fsql3 = new MultiFreeSql(TimeSpan.FromHours(2));
 
         //可传递IdleBus
-        var idlebus  = new IdleBus<string, IFreeSql>(TimeSpan.FromHours(2));
-        idlebus.Notice += (_, __) => { };
-        var fsql2 = new MultiFreeSql(idlebus);
+        Func<IServiceProvider, IFreeSql> fsql2 = r =>
+        {
+            var idlebus = new IdleBus<string, IFreeSql>(TimeSpan.FromHours(2));
+            idlebus.Notice += (_, __) => { };
+            MultiFreeSql fsql2 = new MultiFreeSql(idlebus);
 
-        fsql2.Register("db1", () => new FreeSqlBuilder().UseAutoSyncStructure(true).UseConnectionString(DataType.Sqlite, "Data Source=|DataDirectory|\\SampleApp1.db;").Build());
-        fsql2.Register("db2", () => new FreeSqlBuilder().UseAutoSyncStructure(true).UseConnectionString(DataType.Sqlite, "Data Source=|DataDirectory|\\SampleApp2.db;").Build());
+            fsql2.Register("db1", () => new FreeSqlBuilder().UseAutoSyncStructure(true).UseConnectionString(DataType.Sqlite, "Data Source=|DataDirectory|\\SampleApp1.db;").Build());
+            fsql2.Register("db2", () => new FreeSqlBuilder().UseAutoSyncStructure(true).UseConnectionString(DataType.Sqlite, "Data Source=|DataDirectory|\\SampleApp2.db;").Build());
+            return fsql2;
+        };
 
         services.AddSingleton<IFreeSql>(fsql2);
         #endregion
 
         return services;
     }
+    #endregion
+    
+    #region 单个FreeSql注入方式
     public static IServiceCollection AddFreeSql(this IServiceCollection services, IConfiguration Configuration)
     {
-        IFreeSql fsql = new FreeSqlBuilder()
-                    .UseConnectionString(DataType.Sqlite, Configuration["ConnectionStrings:DefaultConnection"])
-                    //.UseConnectionString(DataType.MySql, Configuration["ConnectionStrings:MySql"])
-                    .UseNameConvert(NameConvertType.PascalCaseToUnderscoreWithLower)
-                    .UseAutoSyncStructure(true)
-                    //.UseGenerateCommandParameterWithLambda(true)
-                    .UseLazyLoading(false)
-                    .UseMonitorCommand(
-                        cmd => Trace.WriteLine("\r\n线程" + Thread.CurrentThread.ManagedThreadId + ": " + cmd.CommandText)
-                        )
-                    .Build();
+        Func<IServiceProvider, IFreeSql> fsql = r =>
+        {
+            IFreeSql fsql = new FreeSqlBuilder()
+                     // .UseConnectionString(DataType.Sqlite, Configuration["ConnectionStrings:DefaultConnection"])
+                     .UseConnectionString(DataType.MySql, Configuration["ConnectionStrings:MySql"])
+                     .UseNameConvert(NameConvertType.PascalCaseToUnderscoreWithLower)
+                     .UseAutoSyncStructure(true)
+                     //.UseGenerateCommandParameterWithLambda(true)
+                     .UseLazyLoading(false)
+                     .UseMonitorCommand(
+                         cmd => Trace.WriteLine("\r\n线程" + Thread.CurrentThread.ManagedThreadId + ": " + cmd.CommandText)
+                         )
+                     .Build();
+            return fsql;
+        };
 
         services.AddSingleton(fsql);
         services.AddFreeRepository();
         services.AddScoped<UnitOfWorkManager>();
-        fsql.CodeFirst.Entity<SysUser>(eb =>
-        {
-            eb.HasData(new List<SysUser>() { new SysUser() { UserName = "admin" } });
-        });
-        fsql.CodeFirst.SyncStructure<SysUser>();
-
         return services;
     }
     #endregion

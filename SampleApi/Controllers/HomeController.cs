@@ -47,7 +47,7 @@ public class HomeController : ControllerBase
 
         //查询 db2
         var db2 = _fsql.Select<SysUser>().ToList();
-        
+
         return db2;
     }
 
@@ -88,7 +88,7 @@ public class HomeController : ControllerBase
         var b0 = _fsql.Select<SysUser>().ToList();
         return b0;
     }
-    
+
     /// <summary>
     /// 注册第3个数据库
     /// </summary>
