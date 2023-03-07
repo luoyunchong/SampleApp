@@ -2,14 +2,14 @@
 
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
-		<TargetFramework>net6.0-windows</TargetFramework>
+		<TargetFramework>net7.0-windows</TargetFramework>
 		<Nullable>enable</Nullable>
 		<UseWPF>true</UseWPF>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="FreeSql.DbContext" Version="3.2.666-preview20220818" />
-		<PackageReference Include="FreeSql.Provider.Sqlite" Version="3.2.666-preview20220818" />
+		<PackageReference Include="FreeSql.DbContext" Version="3.2.691-preview20230305" />
+		<PackageReference Include="FreeSql.Provider.Sqlite" Version="3.2.691-preview20230305" />
 	</ItemGroup>
 
 </Project>

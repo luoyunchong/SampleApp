@@ -9,7 +9,7 @@
 			samplecli  example --title 标题
 		</Description>
 		<OutputType>Exe</OutputType>
-		<TargetFramework>net6.0</TargetFramework>
+		<TargetFramework>net7.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<IncludeSource>false</IncludeSource>
 		<PackAsTool>true</PackAsTool>
@@ -37,13 +37,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Scriban" Version="5.5.0" />
-		<PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.2-mauipre.1.22054.8" />
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+		<PackageReference Include="Scriban" Version="5.7.0" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
 		<PackageReference Include="Humanizer.Core" Version="2.14.1" />
 		<PackageReference Include="Serilog.Extensions.Hosting" Version="5.0.1" />
-		<PackageReference Include="Serilog.Settings.Configuration" Version="3.3.1-dev-00296" />
-		<PackageReference Include="Serilog.Sinks.Console" Version="4.0.2-dev-00890" />
+		<PackageReference Include="Serilog.Settings.Configuration" Version="3.4.0" />
+		<PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
 		<PackageReference Include="Serilog.Sinks.File" Version="5.0.1-dev-00947" />
 		<PackageReference Include="System.CommandLine" Version="2.0.0-beta3.22106.2" />
 		<PackageReference Include="System.CommandLine.Hosting" Version="0.4.0-alpha.22106.2" />

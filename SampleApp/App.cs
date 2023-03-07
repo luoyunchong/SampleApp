@@ -36,12 +36,16 @@ namespace SampleApp
                 //var db1 = ctx.Set<Song>();
                 //var db2 = ctx.Set<Tag>();
 
-                var item1 = new Song { Id = Guid.NewGuid().ToString() };
-                var item2 = new Song { Id = Guid.NewGuid().ToString() };
+                var item1 = new Song { NN = "item1" };
+                var item2 = new Song { NN = "item2" };
                 await ctx.AddRangeAsync(new List<Song> { item1, item2 });
                 ctx.SaveChanges();
             }
-            fsql.Select<Song>().ToList();
+            var songlist=fsql.Select<Song>().ToList();
+            foreach (var item in songlist)
+            {
+                Console.WriteLine(item.Id);
+            }
             _logger.LogInformation("App Run End!");
         }
 
@@ -52,11 +56,10 @@ namespace SampleApp
         }
     }
 
-    [Table(Name = "Order")]
     internal class Song
     {
-        [Column(IsPrimary = true)]
-        public string Id { get; set; }
+        [Column(IsPrimary = true, IsIdentity = true)]
+        public long Id { get; set; }
         public string NN { get; set; }
     }
 }
