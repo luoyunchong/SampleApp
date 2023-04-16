@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using SampleApp;
+using SampleApp.Extensions;
 using SampleApp.Options;
 
 namespace SampleAppTests
@@ -39,25 +40,14 @@ namespace SampleAppTests
         // ConfigureServices(HostBuilderContext hostBuilderContext, IServiceCollection services)
         public void ConfigureServices(IServiceCollection services, HostBuilderContext hostBuilderContext)
         {
-            IFreeSql fsql = new FreeSql.FreeSqlBuilder()
-     .UseConnectionString(FreeSql.DataType.Sqlite, configuration["ConnectionStrings:DefaultConnection"])
-     .UseAutoSyncStructure(true)
-     //.UseGenerateCommandParameterWithLambda(true)
-     .UseLazyLoading(true)
-     .UseMonitorCommand(
-         cmd => Trace.WriteLine("\r\n线程" + Thread.CurrentThread.ManagedThreadId + ": " + cmd.CommandText)
-         )
-     .Build();
+            services.Init(configuration);
             // 配置日志
             services.AddLogging(builder =>
             {
                 builder.AddConsole();
                 builder.AddDebug();
             });
-            services.AddSingleton(fsql);
-            services.Configure<AppOption>(configuration.GetSection(nameof(AppOption)));
-            services.AddTransient<App>(); // Add transiant mean give me an instance each it is being requested
-            services.AddHttpClient();
+            
         }
 
         // 可以添加要用到的方法参数，会自动从注册的服务中获取服务实例，类似于 asp.net core 里 Configure 方法

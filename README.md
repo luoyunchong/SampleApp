@@ -23,7 +23,7 @@ xUnit集成依赖注入
 
 引用包
 ```xml
-<PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
+<PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
 ```
 
 初始化Host

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.FileProviders;
+using SampleApp.Extensions;
 using Scriban;
 using Scriban.Runtime;
 using System;

@@ -4,7 +4,7 @@
 		<TargetFramework>net7.0</TargetFramework>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="FreeSql" Version="3.2.691-preview20230305" />
-		<PackageReference Include="IdleBus" Version="1.5.2" />
+		<PackageReference Include="FreeSql" Version="3.2.693" />
+		<PackageReference Include="IdleBus" Version="1.5.3" />
 	</ItemGroup>
 </Project>

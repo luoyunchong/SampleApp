@@ -5,7 +5,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GetWxSwagger
+namespace SampleApp.Extensions
 {
     public static class Extensions
     {

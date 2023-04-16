@@ -8,17 +8,17 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="FreeSql.Provider.MySqlConnector" Version="3.2.691-preview20230305" />
-		<PackageReference Include="FreeSql.Provider.Sqlite" Version="3.2.691-preview20230305" />
-		<PackageReference Include="FreeSql.Repository" Version="3.2.691-preview20230305" />
-		<PackageReference Include="IGeekFan.AspNetCore.RapiDoc" Version="0.0.5" />
-		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.3" />
-		<PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.27.0" />
+		<PackageReference Include="FreeSql.Provider.MySqlConnector" Version="3.2.693" />
+		<PackageReference Include="FreeSql.Provider.Sqlite" Version="3.2.693" />
+		<PackageReference Include="FreeSql.Repository" Version="3.2.693" />
+		<PackageReference Include="IGeekFan.AspNetCore.RapiDoc" Version="0.0.7" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.5" />
+		<PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.29.0" />
 		<PackageReference Include="Serilog.AspNetCore" Version="6.1.0" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="Serilog.Sinks.MariaDB" Version="1.0.1" />
-		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.27.0" />
+		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.29.0" />
 	</ItemGroup>
 
 	<ItemGroup>
