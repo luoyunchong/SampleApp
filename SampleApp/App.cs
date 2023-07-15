@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using SampleApp.Extensions;
 
 namespace SampleApp
 {
@@ -14,38 +15,24 @@ namespace SampleApp
     {
         private readonly ILogger<App> _logger;
         private readonly AppOption _appOption;
-        private readonly IConfiguration configuration;
-        private readonly IFreeSql fsql;
-        private readonly IHttpClientFactory httpClientFactory;
-        public App(ILogger<App> logger, IOptions<AppOption> appOption, IConfiguration configuration, IFreeSql fsql, IHttpClientFactory httpClientFactory)
+        private readonly IConfiguration _configuration;
+        private readonly IFreeSql _fsql;
+        private readonly IFreeSql<MySqlFlag> _mysql;
+        public App(ILogger<App> logger, IOptions<AppOption> appOption, IConfiguration configuration, IFreeSql fsql, IFreeSql<MySqlFlag> mysql)
         {
             _logger = logger;
             _appOption = appOption.Value;
-            this.configuration = configuration;
-            this.fsql = fsql;
-            this.httpClientFactory = httpClientFactory;
+            _configuration = configuration;
+            _fsql = fsql;
+            _mysql = mysql;
         }
 
         public async Task RunAsync(string[] args)
         {
             _logger.LogInformation("App Run Start");
+            
+            
             await Task.FromResult(0);
-
-            using (var ctx = fsql.CreateDbContext())
-            {
-                //var db1 = ctx.Set<Song>();
-                //var db2 = ctx.Set<Tag>();
-
-                var item1 = new Song { NN = "item1" };
-                var item2 = new Song { NN = "item2" };
-                await ctx.AddRangeAsync(new List<Song> { item1, item2 });
-                ctx.SaveChanges();
-            }
-            var songlist=fsql.Select<Song>().ToList();
-            foreach (var item in songlist)
-            {
-                Console.WriteLine(item.Id);
-            }
             _logger.LogInformation("App Run End!");
         }
 
@@ -56,10 +43,4 @@ namespace SampleApp
         }
     }
 
-    internal class Song
-    {
-        [Column(IsPrimary = true, IsIdentity = true)]
-        public long Id { get; set; }
-        public string NN { get; set; }
-    }
 }

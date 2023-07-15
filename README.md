@@ -2,9 +2,9 @@
 
 ## SampleApp
 
-Console¼¯³ÉÒÀÀµ×¢Èë£¬SerilogÈÕÖ¾
+Consoleé›†æˆä¾èµ–æ³¨å…¥ï¼ŒSerilogæ—¥å¿—
 
-¼¼ÊõÒªµã
+æŠ€æœ¯è¦ç‚¹
 
 - Scriban
 - HTTP Request
@@ -15,18 +15,18 @@ Console¼¯³ÉÒÀÀµ×¢Èë£¬SerilogÈÕÖ¾
 - Newtonsoft.Json
 - Json Web Token
 
-xUnit¼¯³ÉÒÀÀµ×¢Èë
+xUnité›†æˆä¾èµ–æ³¨å…¥
 
 - Xunit.DependencyInjection
 
-## ĞÂ½¨Ò»¸öconsoleÏîÄ¿
+## æ–°å»ºä¸€ä¸ªconsoleé¡¹ç›®
 
-ÒıÓÃ°ü
+å¼•ç”¨åŒ…
 ```xml
 <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
 ```
 
-³õÊ¼»¯Host
+åˆå§‹åŒ–Host
 ```csharp
 static IHost AppStartup()
 {
@@ -46,7 +46,7 @@ static IHost AppStartup()
 }
 ```
 
-Ò»¸ö¼òµ¥µÄ·şÎñ£¬Ã»ÓĞ½Ó¿Ú
+ä¸€ä¸ªç®€å•çš„æœåŠ¡ï¼Œæ²¡æœ‰æ¥å£
 ```csharp
 public class App
 {
@@ -65,7 +65,7 @@ public class App
 }
 ```
 
-µ÷ÓÃ 
+è°ƒç”¨ 
 ```csharp
 static async Task Main(string[] args)
 {
@@ -78,9 +78,9 @@ static async Task Main(string[] args)
 ```
 
 
-### ¼¯³É Serilog
+### é›†æˆ Serilog
 
-ÒıÓÃ°ü
+å¼•ç”¨åŒ…
 ```xml
 <PackageReference Include="Serilog.Extensions.Hosting" Version="4.1.2" />
 <PackageReference Include="Serilog.Settings.Configuration" Version="3.2.0" />
@@ -89,7 +89,7 @@ static async Task Main(string[] args)
 ```
 
 
-ÔÚBuild·½·¨µ÷ÓÃ Ö®Ç°µ÷ÓÃ `UseSerilog`
+åœ¨Buildæ–¹æ³•è°ƒç”¨ ä¹‹å‰è°ƒç”¨ `UseSerilog`
 ```diff
 static IHost AppStartup()
 {
@@ -112,7 +112,7 @@ static IHost AppStartup()
 ```
 
 
-Ôö¼ÓÒ»¸öµ¥¶ÀµÄ·½·¨ÅäÖÃ·şÎñ
+å¢åŠ ä¸€ä¸ªå•ç‹¬çš„æ–¹æ³•é…ç½®æœåŠ¡
 ```csharp
 static void ConfigureServices(HostBuilderContext context, IServiceCollection services)
 {
@@ -128,7 +128,7 @@ static void ConfigureServices(HostBuilderContext context, IServiceCollection ser
 }
 ```  
 
-appsettings.jsonÖĞÅäÖÃ
+appsettings.jsonä¸­é…ç½®
 ```json
    "Serilog": {
     "Using": [
@@ -162,21 +162,21 @@ appsettings.jsonÖĞÅäÖÃ
 ```
 
 
-## ·¢ËÍHTTPÇëÇó
+## å‘é€HTTPè¯·æ±‚
 
-Ôö¼Ó°ü
+å¢åŠ åŒ…
 
 ```xml
     <PackageReference Include="Microsoft.Extensions.Http" Version="5.0.0" />
 ```
  
-ÔÚConfigureServicesÔö¼ÓÅäÖÃ·şÎñÏî
+åœ¨ConfigureServiceså¢åŠ é…ç½®æœåŠ¡é¡¹
 
 ```csharp
     services.AddHttpClient();
 ```    
        
-ÔÚApp.csÖĞ¾Í¿ÉÒÔµ÷ÓÃÁË
+åœ¨App.csä¸­å°±å¯ä»¥è°ƒç”¨äº†
 
 ```csharp
 public class App
@@ -220,9 +220,9 @@ public class App
 }
 ```
 
-## ¼¯³É FreeSql
+## é›†æˆ FreeSql
 
-ÒıÓÃ°ü
+å¼•ç”¨åŒ…
 ```xml
 	<PackageReference Include="FreeSql" Version="2.6.100" />
 	<PackageReference Include="FreeSql.Provider.Sqlite" Version="2.6.100" />
@@ -232,7 +232,7 @@ public class App
 ```
 
  
-ÔÚ·½·¨ConfigureServicesÅäÖÃFreeSqlµÄ·şÎñ
+åœ¨æ–¹æ³•ConfigureServicesé…ç½®FreeSqlçš„æœåŠ¡
 ```csharp
 static void ConfigureServices(HostBuilderContext context, IServiceCollection services)
 {
@@ -245,7 +245,7 @@ static void ConfigureServices(HostBuilderContext context, IServiceCollection ser
                         //.UseGenerateCommandParameterWithLambda(true)
                         .UseLazyLoading(true)
                         .UseMonitorCommand(
-                            cmd => Trace.WriteLine("\r\nÏß³Ì" + Thread.CurrentThread.ManagedThreadId + ": " + cmd.CommandText)
+                            cmd => Trace.WriteLine("\r\nçº¿ç¨‹" + Thread.CurrentThread.ManagedThreadId + ": " + cmd.CommandText)
                             )
                         .Build();
     fsql.Aop.ConfigEntityProperty += (s, e) =>
@@ -264,7 +264,7 @@ static void ConfigureServices(HostBuilderContext context, IServiceCollection ser
 }
 ```
 
-appsettings.jsonÅäÖÃÊı¾İ¿âÁ´½Ó
+appsettings.jsoné…ç½®æ•°æ®åº“é“¾æ¥
 ```json
  "ConnectionStrings": {
     "DefaultConnection": "Data Source=|DataDirectory|\\SampleApp.db;",
@@ -274,12 +274,12 @@ appsettings.jsonÅäÖÃÊı¾İ¿âÁ´½Ó
 ```
 
 
-Ç¿ÀàĞÍ°ó¶¨¶ÔÏó
+å¼ºç±»å‹ç»‘å®šå¯¹è±¡
 ```csharp
     services.Configure<AppOption>(configuration.GetSection(nameof(AppOption)));
 ```
 
-ÊµÌå
+å®ä½“
 ```csharp
 public class AppOption
 {
@@ -288,16 +288,16 @@ public class AppOption
 }
 ```
 
-appsettings.jsonÅäÖÃjson¶ÔÏó
+appsettings.jsoné…ç½®jsonå¯¹è±¡
 ```json
  "AppOption": {
-    "TemplatesPath": "./Templates", //Ïà¶ÔÂ·¾¶£¬µ±Ç°ÏîÄ¿ÏÂµÄTemplatesÄ¿Â¼
-    "OutputDirectory": "../../../Output" //¿ÉÒÔÊÇÏà¶ÔÂ·¾¶£¬Ò²¿ÉÒÔÊÇ¾ø¶ÔÂ·¾¶
+    "TemplatesPath": "./Templates", //ç›¸å¯¹è·¯å¾„ï¼Œå½“å‰é¡¹ç›®ä¸‹çš„Templatesç›®å½•
+    "OutputDirectory": "../../../Output" //å¯ä»¥æ˜¯ç›¸å¯¹è·¯å¾„ï¼Œä¹Ÿå¯ä»¥æ˜¯ç»å¯¹è·¯å¾„
   }
 ```
 
 
-Ê¹ÓÃ
+ä½¿ç”¨
 ```csharp
 public class App
 {
@@ -312,7 +312,7 @@ public class App
 ```
 
 
-ÅÀ³æ`HtmlAgilityPack`£¬JosnĞòÁĞ»¯`Newtonsoft.Json`£¬ÓÑºÃµÄ°ïÖúÀà`Humanizer`£¬Ä£°åÒıÇæ`Scriban`
+çˆ¬è™«`HtmlAgilityPack`ï¼ŒJosnåºåˆ—åŒ–`Newtonsoft.Json`ï¼Œå‹å¥½çš„å¸®åŠ©ç±»`Humanizer`ï¼Œæ¨¡æ¿å¼•æ“`Scriban`
 ```xml
 	<PackageReference Include="HtmlAgilityPack" Version="1.11.36" />
 	<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
