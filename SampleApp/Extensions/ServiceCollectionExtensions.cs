@@ -9,7 +9,10 @@ using System.Threading.Tasks;
 using Yitter.IdGenerator;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.Diagnostics;
+using SampleApp.Services;
+using System.Data.SQLite;
+using FreeRedis;
+using Newtonsoft.Json;
 
 namespace SampleApp.Extensions
 {
@@ -18,16 +21,27 @@ namespace SampleApp.Extensions
 
         public static IServiceCollection Init(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddTransient<App>(); // Add transiant mean give me an instance each it is being requested
+            services.AddTransient<App>();
+            services.AddTransient<IRestClient, RestClient>();
+
             services.AddHttpClient();
             services.Configure<AppOption>(configuration.GetSection(nameof(AppOption)));
 
-            IFreeSql fsql = new FreeSql.FreeSqlBuilder()
-                               .UseConnectionString(FreeSql.DataType.Sqlite, configuration["ConnectionStrings:DefaultConnection"])
+
+            services.AddFreeSql(configuration);
+            services.AddRedisClient(configuration);
+
+            return services;
+        }
+
+        public static IServiceCollection AddFreeSql(this IServiceCollection services, IConfiguration configuration)
+        {
+            IFreeSql fsql = new FreeSqlBuilder()
+                               .UseConnectionString(DataType.Sqlite, configuration["ConnectionStrings:Sqlite"])
                                 // .UseConnectionString(FreeSql.DataType.MySql, configuration["ConnectionStrings:MySql"])
                                 //.UseConnectionString(FreeSql.DataType.SqlServer, configuration["ConnectionStrings:SqlServer"])
                                 .UseMappingPriority(MappingPriorityType.Attribute, MappingPriorityType.FluentApi, MappingPriorityType.Aop)
-                                .UseNameConvert(FreeSql.Internal.NameConvertType.ToUpper)
+                                .UseNameConvert(NameConvertType.ToUpper)
                                 .UseAutoSyncStructure(true)
                                 //.UseNoneCommandParameter(true)
                                 //.UseGenerateCommandParameterWithLambda(true)
@@ -72,7 +86,34 @@ namespace SampleApp.Extensions
             services.AddSingleton(fsql);
             services.AddFreeRepository();
             services.AddScoped<UnitOfWorkManager>();
+
+            IFreeSql<MySqlFlag> mysql = new FreeSqlBuilder()
+                        .UseConnectionString(DataType.MySql, configuration["ConnectionStrings:MySql"])
+                         .UseMappingPriority(MappingPriorityType.Attribute, MappingPriorityType.FluentApi, MappingPriorityType.Aop)
+                         .UseNameConvert(NameConvertType.ToLower)
+                         .UseAutoSyncStructure(true)
+                         .UseMonitorCommand(
+                             cmd => Console.WriteLine("\r\n线程" + Thread.CurrentThread.ManagedThreadId + ": " + cmd.CommandText)
+                             )
+                         .Build<MySqlFlag>();
+
+            services.AddSingleton<IFreeSql<MySqlFlag>>(mysql);
+
+            return services;
+        }
+
+        public static IServiceCollection AddRedisClient(this IServiceCollection services, IConfiguration configuration)
+        {
+            RedisClient cli = new RedisClient(configuration["ConnectionStrings:Redis"]);
+            cli.Serialize = obj => JsonConvert.SerializeObject(obj);
+            cli.Deserialize = (json, type) => JsonConvert.DeserializeObject(json, type);
+            cli.Notice += (s, e) => Console.WriteLine(e.Log); //打印命令日志
+
+            services.AddSingleton<IRedisClient>(cli);
+
             return services;
         }
     }
+    
+    public class MySqlFlag { }
 }
