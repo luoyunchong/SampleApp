@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Yitter.IdGenerator;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Diagnostics;
 
 namespace SampleApp.Extensions
 {
@@ -32,7 +33,7 @@ namespace SampleApp.Extensions
                                 //.UseGenerateCommandParameterWithLambda(true)
                                 //.UseLazyLoading(false)
                                 .UseMonitorCommand(
-                                    cmd => Console.WriteLine("\r\n线程" + Thread.CurrentThread.ManagedThreadId + ": " + cmd.CommandText)
+                                    cmd => Trace.WriteLine("\r\n线程" + Thread.CurrentThread.ManagedThreadId + ": " + cmd.CommandText)
                                     )
                                 .Build();
             fsql.Aop.ConfigEntityProperty += (s, e) =>
