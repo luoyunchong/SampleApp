@@ -1,12 +1,12 @@
-[English](README.en.md) | **简体中文**
+**English** | [简体中文](README.zh-CN.md)
 
 
 
 ## SampleApp
 
-Console集成依赖注入，Serilog日志
+Integrate dependency injection and Serilog logging in a console application
 
-技术要点
+Key technologies
 
 - Scriban
 - HTTP Request
@@ -17,18 +17,18 @@ Console集成依赖注入，Serilog日志
 - Newtonsoft.Json
 - Json Web Token
 
-xUnit集成依赖注入
+Integrate dependency injection with xUnit
 
 - Xunit.DependencyInjection
 
-## 新建一个console项目
+## Create a console project
 
-引用包
+Add the packages
 ```xml
 <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
 ```
 
-初始化Host
+Initialize the host
 ```csharp
 static IHost AppStartup()
 {
@@ -48,7 +48,7 @@ static IHost AppStartup()
 }
 ```
 
-一个简单的服务，没有接口
+A simple service without an interface
 ```csharp
 public class App
 {
@@ -67,7 +67,7 @@ public class App
 }
 ```
 
-调用 
+Call
 ```csharp
 static async Task Main(string[] args)
 {
@@ -80,9 +80,9 @@ static async Task Main(string[] args)
 ```
 
 
-### 集成 Serilog
+### Integrate Serilog
 
-引用包
+Add the packages
 ```xml
 <PackageReference Include="Serilog.Extensions.Hosting" Version="4.1.2" />
 <PackageReference Include="Serilog.Settings.Configuration" Version="3.2.0" />
@@ -91,7 +91,7 @@ static async Task Main(string[] args)
 ```
 
 
-在Build方法调用 之前调用 `UseSerilog`
+Call `UseSerilog` before the Build method
 ```diff
 static IHost AppStartup()
 {
@@ -114,7 +114,7 @@ static IHost AppStartup()
 ```
 
 
-增加一个单独的方法配置服务
+Add a separate method to configure services
 ```csharp
 static void ConfigureServices(HostBuilderContext context, IServiceCollection services)
 {
@@ -130,7 +130,7 @@ static void ConfigureServices(HostBuilderContext context, IServiceCollection ser
 }
 ```  
 
-appsettings.json中配置
+Configure appsettings.json
 ```json
    "Serilog": {
     "Using": [
@@ -164,21 +164,21 @@ appsettings.json中配置
 ```
 
 
-## 发送HTTP请求
+## Send HTTP requests
 
-增加包
+Add the package
 
 ```xml
     <PackageReference Include="Microsoft.Extensions.Http" Version="5.0.0" />
 ```
  
-在ConfigureServices增加配置服务项
+Add the service configuration in ConfigureServices
 
 ```csharp
     services.AddHttpClient();
 ```    
        
-在App.cs中就可以调用了
+It can then be called from App.cs
 
 ```csharp
 public class App
@@ -222,9 +222,9 @@ public class App
 }
 ```
 
-## 集成 FreeSql
+## Integrate FreeSql
 
-引用包
+Add the packages
 ```xml
 	<PackageReference Include="FreeSql" Version="2.6.100" />
 	<PackageReference Include="FreeSql.Provider.Sqlite" Version="2.6.100" />
@@ -234,7 +234,7 @@ public class App
 ```
 
  
-在方法ConfigureServices配置FreeSql的服务
+Configure the FreeSql service in ConfigureServices
 ```csharp
 static void ConfigureServices(HostBuilderContext context, IServiceCollection services)
 {
@@ -266,7 +266,7 @@ static void ConfigureServices(HostBuilderContext context, IServiceCollection ser
 }
 ```
 
-appsettings.json配置数据库链接
+Configure the database connection in appsettings.json
 ```json
  "ConnectionStrings": {
     "DefaultConnection": "Data Source=|DataDirectory|\\SampleApp.db;",
@@ -276,12 +276,12 @@ appsettings.json配置数据库链接
 ```
 
 
-强类型绑定对象
+Bind a strongly typed object
 ```csharp
     services.Configure<AppOption>(configuration.GetSection(nameof(AppOption)));
 ```
 
-实体
+Entity
 ```csharp
 public class AppOption
 {
@@ -290,7 +290,7 @@ public class AppOption
 }
 ```
 
-appsettings.json配置json对象
+Configure a JSON object in appsettings.json
 ```json
  "AppOption": {
     "TemplatesPath": "./Templates", //相对路径，当前项目下的Templates目录
@@ -299,7 +299,7 @@ appsettings.json配置json对象
 ```
 
 
-使用
+Usage
 ```csharp
 public class App
 {
@@ -314,7 +314,7 @@ public class App
 ```
 
 
-爬虫`HtmlAgilityPack`，Josn序列化`Newtonsoft.Json`，友好的帮助类`Humanizer`，模板引擎`Scriban`
+Web scraping with `HtmlAgilityPack`, JSON serialization with `Newtonsoft.Json`, helper APIs with `Humanizer`, and templating with `Scriban`
 ```xml
 	<PackageReference Include="HtmlAgilityPack" Version="1.11.36" />
 	<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
